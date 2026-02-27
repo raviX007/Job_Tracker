@@ -91,14 +91,14 @@ def setup_logger(name: str = "jobbot") -> logging.Logger:
 
     # File handler (always JSON)
     log_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "logs")
-    os.makedirs(log_dir, exist_ok=True)
-    log_file = os.path.join(log_dir, f"{name}.log")
-    file_handler = logging.FileHandler(log_file)
-    file_handler.setFormatter(JSONFormatter())
-    logger.addHandler(file_handler)
-
-    return logger
-
+    try:
+        os.makedirs(log_dir, exist_ok=True)
+        log_file = os.path.join(log_dir, f"{name}.log")
+        file_handler = logging.FileHandler(log_file)
+        file_handler.setFormatter(JSONFormatter())
+        logger.addHandler(file_handler)
+    except PermissionError:
+        pass 
 
 # Singleton logger instance
 logger = setup_logger()
