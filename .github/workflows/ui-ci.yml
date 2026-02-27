@@ -1,0 +1,53 @@
+name: UI CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ui:
+    name: UI (lint + test + build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ui-next
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - id: changes
+        name: Check for ui-next changes
+        run: |
+          if git diff --name-only HEAD~1 HEAD | grep -q '^ui-next/'; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+        working-directory: .
+
+      - uses: actions/setup-node@v4
+        if: steps.changes.outputs.changed == 'true' || github.event_name == 'pull_request'
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: ui-next/package-lock.json
+
+      - name: Install dependencies
+        if: steps.changes.outputs.changed == 'true' || github.event_name == 'pull_request'
+        run: npm ci
+
+      - name: Lint (ESLint)
+        if: steps.changes.outputs.changed == 'true' || github.event_name == 'pull_request'
+        run: npm run lint
+
+      - name: Test with coverage (Vitest)
+        if: steps.changes.outputs.changed == 'true' || github.event_name == 'pull_request'
+        run: npm run test:coverage
+
+      - name: Build
+        if: steps.changes.outputs.changed == 'true' || github.event_name == 'pull_request'
+        run: npm run build

@@ -1,0 +1,38 @@
+[project]
+name = "job-tracker-pipeline"
+requires-python = "3.12.0"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+]
+ignore = [
+    "E501",   # line length (handled by formatter)
+    "B008",   # function call in default arg (FastAPI Depends pattern)
+    "SIM108", # ternary operator (readability preference)
+    "UP007",  # X | Y union syntax already used everywhere
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["B018"]  # useless expression (assert patterns)
+"scripts/*" = ["E402"]  # imports after sys.path / load_dotenv()
+"core/llm.py" = ["E402"]  # imports after try/except langfuse block
+"emailer/verifier.py" = ["E402"]  # mid-file constant import
+"scraper/aggregator_scraper.py" = ["E402"]  # asyncio import near usage
+
+[tool.ruff.lint.isort]
+known-first-party = ["core", "scraper", "analyzer", "emailer", "config", "scripts"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

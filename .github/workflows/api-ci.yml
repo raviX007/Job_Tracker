@@ -1,0 +1,53 @@
+name: API CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  api:
+    name: API (lint + typecheck + test)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - id: changes
+        name: Check for api changes
+        run: |
+          if git diff --name-only HEAD~1 HEAD | grep -q '^api/'; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+        working-directory: .
+
+      - uses: actions/setup-python@v5
+        if: steps.changes.outputs.changed == 'true' || github.event_name == 'pull_request'
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: api/requirements-dev.txt
+
+      - name: Install dependencies
+        if: steps.changes.outputs.changed == 'true' || github.event_name == 'pull_request'
+        run: pip install -r requirements-dev.txt ruff mypy
+
+      - name: Lint (ruff)
+        if: steps.changes.outputs.changed == 'true' || github.event_name == 'pull_request'
+        run: ruff check api/ core/ tests/
+
+      - name: Typecheck (mypy)
+        if: steps.changes.outputs.changed == 'true' || github.event_name == 'pull_request'
+        run: mypy api/ core/ --ignore-missing-imports
+
+      - name: Test with coverage
+        if: steps.changes.outputs.changed == 'true' || github.event_name == 'pull_request'
+        run: pytest tests/ -v --tb=short --cov=api --cov-report=term-missing --cov-fail-under=70

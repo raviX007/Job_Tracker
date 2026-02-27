@@ -1,0 +1,92 @@
+[
+  {
+    "title": "Python Developer (Fresher)",
+    "company": "TechStartup India",
+    "location": "Bengaluru",
+    "source": "naukri",
+    "description": "Looking for a Python developer with Django/FastAPI experience. 0-2 years. Skills: Python, Django, PostgreSQL, REST APIs. B.Tech CSE preferred. CTC: 4-6 LPA.",
+    "date_posted": "2026-02-15",
+    "job_url": "https://naukri.com/jobs/python-dev-123"
+  },
+  {
+    "title": "AI/ML Engineer - LLM Applications",
+    "company": "AI Startup Labs",
+    "location": "Bengaluru, Remote",
+    "source": "wellfound",
+    "description": "Building LLM-powered products. Need someone with LangChain, RAG, vector databases experience. 0-3 years. Python, FastAPI, React. We value self-learners. CTC: 5-8 LPA.",
+    "date_posted": "2026-02-14",
+    "job_url": "https://wellfound.com/l/ai-startup-labs/ai-ml-engineer"
+  },
+  {
+    "title": "Full Stack Developer",
+    "company": "Razorpay",
+    "location": "Bengaluru",
+    "source": "linkedin",
+    "description": "Join our payments team. React, Node.js, Python, PostgreSQL. 2-4 years experience. Strong problem-solving skills required. Understanding of distributed systems a plus.",
+    "date_posted": "2026-02-13",
+    "job_url": "https://linkedin.com/jobs/view/razorpay-fullstack-456"
+  },
+  {
+    "title": "Software Developer Intern",
+    "company": "Zomato",
+    "location": "Gurgaon",
+    "source": "internshala",
+    "description": "6-month internship. Python, Django, React. Stipend: 25K/month. Convert to full-time based on performance. B.Tech 2023-2024 passout.",
+    "date_posted": "2026-02-16",
+    "job_url": "https://internshala.com/internship/zomato-dev-intern"
+  },
+  {
+    "title": "Senior Backend Engineer (5+ years)",
+    "company": "Google",
+    "location": "Bengaluru",
+    "source": "glassdoor",
+    "description": "Senior role. 5+ years in distributed systems, Go, Java, C++. Kubernetes, microservices architecture. PhD preferred.",
+    "date_posted": "2026-02-10",
+    "job_url": "https://glassdoor.com/jobs/google-senior-backend-789"
+  },
+  {
+    "title": "QA Analyst",
+    "company": "Infosys",
+    "location": "Bengaluru",
+    "source": "naukri",
+    "description": "Manual testing role. Selenium, JIRA, test case documentation. 0-2 years. CTC: 3-4 LPA.",
+    "date_posted": "2026-02-12",
+    "job_url": "https://naukri.com/jobs/qa-analyst-infosys-101"
+  },
+  {
+    "title": "Django Developer",
+    "company": "HealthTech Startup",
+    "location": "Remote India",
+    "source": "indeed",
+    "description": "Small team building a healthcare platform. Django, DRF, Celery, PostgreSQL, Docker. 0-2 years. We care about code quality, not pedigree. CTC: 4-7 LPA.",
+    "date_posted": "2026-02-15",
+    "job_url": "https://indeed.com/viewjob/healthtech-django-202"
+  },
+  {
+    "title": "React Frontend Developer",
+    "company": "EdTech Co",
+    "location": "Bengaluru",
+    "source": "cutshort",
+    "description": "React, TypeScript, Next.js. Build student-facing dashboards. 1-3 years. Startups welcome. CTC: 5-8 LPA.",
+    "date_posted": "2026-02-14",
+    "job_url": "https://cutshort.io/jobs/edtech-react-303"
+  },
+  {
+    "title": "LangChain Developer (AI Agents)",
+    "company": "AgentFlow AI",
+    "location": "Remote",
+    "source": "remoteok",
+    "description": "Build multi-agent systems with LangGraph, MCP protocol. Python, FastAPI, vector databases. Experience with RAG pipelines. Freshers with strong projects welcome.",
+    "date_posted": "2026-02-16",
+    "job_url": "https://remoteok.com/remote-jobs/agentflow-langchain-404"
+  },
+  {
+    "title": "Customer Support Executive",
+    "company": "BPO Corp",
+    "location": "Bengaluru",
+    "source": "naukri",
+    "description": "Voice process. Night shifts. English fluency required. 0-1 years. CTC: 2-3 LPA.",
+    "date_posted": "2026-02-11",
+    "job_url": "https://naukri.com/jobs/bpo-support-505"
+  }
+]

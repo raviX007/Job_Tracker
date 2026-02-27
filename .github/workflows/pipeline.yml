@@ -1,0 +1,128 @@
+name: Pipeline Run
+
+on:
+  schedule:
+    # Main pipeline: Daily at 3:00 AM UTC (8:30 AM IST)
+    - cron: '0 3 * * *'
+    # Startup Scout: Daily at 5:00 AM UTC (10:30 AM IST)
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+    inputs:
+      pipeline:
+        description: 'Which pipeline to run'
+        required: false
+        default: 'main'
+        type: choice
+        options:
+          - main
+          - startup-scout
+          - both
+      source:
+        description: 'Scraper source (main: all, remotive, etc. | startup: startup_scout, hn_hiring, etc.)'
+        required: false
+        default: 'all'
+      limit:
+        description: 'Max items per source'
+        required: false
+        default: '10'
+
+jobs:
+  main-pipeline:
+    if: >-
+      github.event_name == 'workflow_dispatch' && (github.event.inputs.pipeline == 'main' || github.event.inputs.pipeline == 'both')
+      || github.event_name == 'schedule' && github.event.schedule == '0 3 * * *'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: pipeline
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          # Install torch CPU-only to save space (~200MB vs ~2GB)
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Run tests
+        run: pytest tests/ -v --tb=short
+
+      - name: Run main pipeline
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          API_SECRET_KEY: ${{ secrets.API_SECRET_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          JOOBLE_API_KEY: ${{ secrets.JOOBLE_API_KEY }}
+          ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
+          ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
+          FINDWORK_TOKEN: ${{ secrets.FINDWORK_TOKEN }}
+          LANGFUSE_SECRET_KEY: ${{ secrets.LANGFUSE_SECRET_KEY }}
+          LANGFUSE_PUBLIC_KEY: ${{ secrets.LANGFUSE_PUBLIC_KEY }}
+          LANGFUSE_HOST: https://cloud.langfuse.com
+          PROFILE_PATH: config/profiles/ravi_raj.yaml
+          DRY_RUN: 'true'
+        run: |
+          SOURCE="${{ github.event.inputs.source || 'all' }}"
+          LIMIT="${{ github.event.inputs.limit || '10' }}"
+          python scripts/dry_run.py --source "$SOURCE" --limit "$LIMIT"
+
+  startup-scout:
+    if: >-
+      github.event_name == 'workflow_dispatch' && (github.event.inputs.pipeline == 'startup-scout' || github.event.inputs.pipeline == 'both')
+      || github.event_name == 'schedule' && github.event.schedule == '0 5 * * *'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: pipeline
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          # Install torch CPU-only to save space (~200MB vs ~2GB)
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Run tests
+        run: pytest tests/ -v --tb=short
+
+      - name: Run startup scout
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          API_SECRET_KEY: ${{ secrets.API_SECRET_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          LANGFUSE_SECRET_KEY: ${{ secrets.LANGFUSE_SECRET_KEY }}
+          LANGFUSE_PUBLIC_KEY: ${{ secrets.LANGFUSE_PUBLIC_KEY }}
+          LANGFUSE_HOST: https://cloud.langfuse.com
+          PROFILE_PATH: config/profiles/ravi_raj.yaml
+          DRY_RUN: 'true'
+        run: |
+          SOURCE="${{ github.event.inputs.source || 'startup_scout' }}"
+          LIMIT="${{ github.event.inputs.limit || '50' }}"
+          python scripts/startup_scout.py --source "$SOURCE" --limit "$LIMIT"

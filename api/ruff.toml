@@ -1,0 +1,9 @@
+line-length = 120
+
+[lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["B008"]  # Query() in FastAPI param defaults is standard pattern
+
+[lint.per-file-ignores]
+# dotenv must load before dependent imports
+"api/server.py" = ["E402", "I001"]

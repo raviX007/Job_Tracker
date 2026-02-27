@@ -1,0 +1,57 @@
+# Test profile for automated tests
+candidate:
+  name: "Test User"
+  email: "test@example.com"
+  phone: "+91-9999999999"
+  resume_path: "./resumes/test.pdf"
+  github: "github.com/testuser"
+  linkedin: "linkedin.com/in/testuser"
+  location: "Bengaluru, India"
+  timezone: "Asia/Kolkata"
+
+search_preferences:
+  mode: "hybrid"
+  locations:
+    - "Bangalore"
+    - "Bengaluru"
+    - "Remote India"
+  salary_min: 300000
+  salary_currency: "INR"
+
+skills:
+  primary: ["Python", "Django", "FastAPI", "React"]
+  secondary: ["PostgreSQL", "Docker"]
+  frameworks: ["REST APIs"]
+
+experience:
+  years: 0
+  graduation_year: 2023
+  degree: "B.Tech CSE"
+  gap_explanation: "Self-directed study in software development"
+
+anti_hallucination:
+  strict_mode: true
+  validate_output: true
+  allowed_companies: ["TestCorp"]
+
+filters:
+  must_have_any: ["python", "django", "software developer"]
+  skip_titles: ["senior", "lead", "QA"]
+  min_match_score: 40
+  auto_apply_threshold: 60
+  maybe_range: [40, 60]
+
+platforms:
+  naukri: { enabled: true, auto_apply: true, max_daily: 5, delay_min: 3, delay_max: 5 }
+  indeed: { enabled: true, auto_apply: true, max_daily: 5, delay_min: 3, delay_max: 5 }
+
+dream_companies:
+  - "Google"
+  - "Microsoft"
+
+safety:
+  max_applications_per_company_per_month: 2
+  require_review_above_score: 85
+  auto_submit_platforms: ["naukri", "indeed"]
+  followup_after_days: 7
+  followup_max_per_email: 1

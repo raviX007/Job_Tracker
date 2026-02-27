@@ -1,0 +1,46 @@
+# Environment
+.env
+.env.local
+.env.production
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Playwright sessions
+*_session.json
+
+# Logs
+logs/
+*.log
+
+# Model cache (sentence-transformers downloads)
+.cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Resumes (may contain PII)
+resumes/
+
+# Jupyter
+.ipynb_checkpoints/

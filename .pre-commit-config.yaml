@@ -1,0 +1,49 @@
+# Pre-commit hooks — runs linters before every commit
+# Install: pip install pre-commit && pre-commit install
+# Manual:  pre-commit run --all-files
+
+repos:
+  # Ruff linter + formatter for api/
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.6
+    hooks:
+      - id: ruff
+        name: ruff-lint-api
+        files: ^api/
+        args: [--config, api/ruff.toml]
+      - id: ruff-format
+        name: ruff-format-api
+        files: ^api/
+
+  # Ruff linter + formatter for pipeline/
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.6
+    hooks:
+      - id: ruff
+        name: ruff-lint-pipeline
+        files: ^pipeline/
+        args: [--config, pipeline/pyproject.toml]
+      - id: ruff-format
+        name: ruff-format-pipeline
+        files: ^pipeline/
+
+  # ESLint for ui-next/
+  - repo: local
+    hooks:
+      - id: eslint-ui
+        name: eslint-ui-next
+        entry: bash -c 'cd ui-next && npx eslint "$@"' --
+        language: system
+        files: ^ui-next/.*\.(ts|tsx|js|jsx)$
+        pass_filenames: true
+
+  # Prettier formatting for ui-next/
+  - repo: local
+    hooks:
+      - id: prettier-ui
+        name: prettier-ui-next
+        entry: bash -c 'cd ui-next && npx prettier --write "$@"' --
+        language: system
+        files: ^ui-next/.*\.(ts|tsx|js|jsx|json|css)$
+        exclude: ^ui-next/(node_modules|\.next)/
+        pass_filenames: true

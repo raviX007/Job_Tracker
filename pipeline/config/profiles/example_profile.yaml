@@ -1,0 +1,107 @@
+# config/profiles/example_profile.yaml
+# Template for creating a new user profile.
+# Copy this file, rename it, and fill in your details.
+
+candidate:
+  name: "Your Name"
+  email: "you@gmail.com"
+  phone: "+91-XXXXXXXXXX"
+  resume_path: "./resumes/your_name.pdf"
+  github: "github.com/yourname"
+  linkedin: "linkedin.com/in/yourname"
+  portfolio: ""
+  location: "City, Country"
+  timezone: "Asia/Kolkata"
+
+search_preferences:
+  mode: "hybrid"  # onsite | remote | hybrid
+  locations:
+    - "Bangalore"
+    - "Remote India"
+  remote_preferences:
+    accept_global_remote: false
+    accept_country_remote: true
+    country: "India"
+    timezone_range: "IST ± 2hrs"
+    visa_sponsorship_needed: false
+  relocation_willing: false
+  salary_min: 0  # INR per annum (0 = no filter)
+  salary_currency: "INR"
+
+skills:
+  primary: ["Python", "Django"]  # weighted 2x in matching
+  secondary: ["PostgreSQL", "Docker"]
+  frameworks: ["REST APIs"]
+
+experience:
+  years: 0  # 0 = fresher
+  graduation_year: 2023
+  degree: "B.Tech CSE"
+  gap_explanation: ""  # leave empty if no gap
+  work_history: []
+  gap_projects: []
+
+anti_hallucination:
+  strict_mode: true
+  validate_output: true
+  allowed_companies: []  # only these can appear in generated work experience
+
+filters:
+  must_have_any: ["python", "django", "software developer"]
+  skip_titles: ["senior", "lead", "manager", "5+ years"]
+  skip_companies: []
+  target_companies: []
+  min_match_score: 40
+  auto_apply_threshold: 60
+  maybe_range: [40, 60]
+
+matching:
+  embedding_model: "all-MiniLM-L6-v2"
+  fast_filter_threshold: 0.45
+  max_job_age_days: 7
+
+screening_answers:
+  work_authorization_india: "Yes"
+  visa_sponsorship_required: "No"
+  willing_to_relocate: "Yes"
+  notice_period: "Immediate"
+  expected_ctc_range: "3-6 LPA"
+  years_of_experience: "0-1"
+  current_location: "Bengaluru"
+  unknown_question_action: "skip_and_alert"
+
+llm:
+  provider: "openai"
+  model: "gpt-4o-mini"
+  temperature: 0.3
+  max_tokens: 1500
+  json_mode: true
+
+cold_email:
+  sender_name: "Your Name"
+  sender_email: ""
+  max_daily: 12
+  max_per_hour: 8
+  signature: |
+    Best,
+    Your Name
+
+platforms:
+  naukri:     { enabled: true,  auto_apply: true,  max_daily: 15, delay_min: 4, delay_max: 7 }
+  indeed:     { enabled: true,  auto_apply: true,  max_daily: 13, delay_min: 5, delay_max: 10 }
+  foundit:    { enabled: true,  auto_apply: true,  max_daily: 12, delay_min: 4, delay_max: 7 }
+  linkedin:   { enabled: true,  auto_apply: false, max_daily: 0,  delay_min: 3, delay_max: 5 }
+
+aggregators:
+  jooble:   { enabled: true, api_key: "" }
+  adzuna:   { enabled: true, app_id: "", app_key: "" }
+  remoteok: { enabled: true }
+
+dream_companies: []
+
+safety:
+  max_applications_per_company_per_month: 2
+  require_review_above_score: 85
+  auto_submit_platforms: ["naukri", "indeed", "foundit"]
+  followup_after_days: 7
+  followup_max_per_email: 1
