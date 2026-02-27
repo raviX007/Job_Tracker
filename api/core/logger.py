@@ -65,23 +65,16 @@ class ConsoleFormatter(logging.Formatter):
 
 
 def setup_logger(name: str = "jobbot") -> logging.Logger:
-    """Set up and return the application logger.
-
-    - Console handler: format controlled by LOG_FORMAT env var
-    - File handler (logs/ dir): always JSON structured
-    - Log level from LOG_LEVEL env var (default: INFO)
-    """
     log_level = os.getenv("LOG_LEVEL", "INFO").upper()
     log_format = os.getenv("LOG_FORMAT", "console").lower()
 
     logger = logging.getLogger(name)
     logger.setLevel(getattr(logging, log_level, logging.INFO))
 
-    # Prevent duplicate handlers on repeated calls
     if logger.handlers:
         return logger
 
-    # Console handler — JSON in production, colored text in dev
+    # Console handler
     console = logging.StreamHandler(sys.stdout)
     if log_format == "json":
         console.setFormatter(JSONFormatter())
@@ -89,16 +82,18 @@ def setup_logger(name: str = "jobbot") -> logging.Logger:
         console.setFormatter(ConsoleFormatter())
     logger.addHandler(console)
 
-    # File handler (always JSON)
-    log_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "logs")
+    # File handler — skip entirely if not writable (Docker/Render)
     try:
+        log_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "logs")
         os.makedirs(log_dir, exist_ok=True)
         log_file = os.path.join(log_dir, f"{name}.log")
         file_handler = logging.FileHandler(log_file)
         file_handler.setFormatter(JSONFormatter())
         logger.addHandler(file_handler)
-    except PermissionError:
-        pass 
+    except (PermissionError, OSError):
+        pass  # stdout logging is sufficient on Render
+
+    return logger  # ← always returns
 
 # Singleton logger instance
 logger = setup_logger()

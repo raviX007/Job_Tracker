@@ -11,7 +11,10 @@ from pathlib import Path
 
 import asyncpg
 
-from core.logger import logger
+#from core.logger import logger
+from core.logger import logger as _logger
+import logging
+logger = _logger or logging.getLogger("jobbot.database")
 
 
 async def check_db_connection(db_url: str) -> bool:
