@@ -14,8 +14,8 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY || "";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL;
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY ;
 
 export default function LoginPage() {
   const router = useRouter();
@@ -56,7 +56,10 @@ export default function LoginPage() {
       // Fetch profile to sync profile_id in localStorage
       try {
         const profileRes = await fetch(`${API_BASE}/api/profiles/me`, {
-          headers: { "X-API-Key": API_KEY, Authorization: `Bearer ${token}` },
+          headers: {
+            "X-API-Key": API_KEY ?? "",
+            Authorization: `Bearer ${token}`,
+          } as HeadersInit,
         });
         if (profileRes.ok) {
           const profileData = await profileRes.json();
